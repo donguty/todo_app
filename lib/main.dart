@@ -63,8 +63,65 @@ class _TodoListPageState extends State<TodoListPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => NewTodpPage()),
+          ).then((what) {
+            setState(() {
+              _todo.add(Todo(what));
+            });
+          });
+        },
         child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class NewTodpPage extends StatefulWidget {
+  @override
+  _NewTodpPageState createState() => _NewTodpPageState();
+}
+
+class _NewTodpPageState extends State<NewTodpPage> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    _controller = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('New Todo'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextField(
+            controller: _controller,
+            onSubmitted: (String what) {
+              setState(() {
+                Navigator.pop(context, what);
+              });
+            },
+          ),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context, _controller.text);
+              },
+              child: const Text('Añadir'))
+        ],
       ),
     );
   }
